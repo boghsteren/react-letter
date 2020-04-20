@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Pane, TextInputField, Button, Heading, Dialog } from "evergreen-ui";
+import { UserContext } from "../actions/UserActions";
 
-export const SignupBox = ({ createUser, login }) => {
+export const SignupBox = () => {
+  const { login, updateUser, createUser } = useContext(UserContext);
   const [username, updateUsername] = useState("");
   const [password, updatePassword] = useState("");
   const [isShown, updateShown] = useState(false);
@@ -18,7 +20,7 @@ export const SignupBox = ({ createUser, login }) => {
         isConfirmLoading={isLoading}
         onConfirm={async () => {
           updateLoading(true);
-          await createUser(username, password);
+          await createUser({ username, password, updateUser });
           updateLoading(false);
           login(username, password);
         }}

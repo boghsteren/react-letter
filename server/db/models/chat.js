@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const general = require("../database").generalDB;
 
-var chat = mongoose.model("chat", {
+var chat = general.model("chat", {
   messages: [
     {
       message: {

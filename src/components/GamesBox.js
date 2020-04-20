@@ -12,7 +12,7 @@ import {
 } from "evergreen-ui";
 import { useHistory } from "react-router-dom";
 
-export const GamesBox = ({ games, title, deleteGame }) => {
+export const GamesBox = ({ games, title, deleteGame, joinGame }) => {
   let history = useHistory();
   const seats = [1, 2, 3, 4, 5];
   return (
@@ -27,9 +27,8 @@ export const GamesBox = ({ games, title, deleteGame }) => {
         {title}
       </Heading>
       {games?.map((game) => (
-        <Pane display="flex">
+        <Pane display="flex" key={game._id}>
           <Card
-            key={game._id}
             background="white"
             padding="10px"
             marginTop="10px"
@@ -42,13 +41,16 @@ export const GamesBox = ({ games, title, deleteGame }) => {
           >
             <Strong
               marginRight="10px"
-              width="200px"
+              width="100px"
               whiteSpace="nowrap"
               overflow="hidden"
               textOverflow="ellipsis"
             >
               {game.game_name}
             </Strong>
+            <Text marginLeft="10px" marginRight="10px" width="50px">
+              {game.host?.username}
+            </Text>
             <Pane marginRight="10px">
               {seats.map((seat) => (
                 <Tooltip
@@ -65,11 +67,18 @@ export const GamesBox = ({ games, title, deleteGame }) => {
             <Badge marginRight="10px" color={game.started ? "blue" : "purple"}>
               {game.started ? "Started" : "Not started"}
             </Badge>
-          </Card>{" "}
+          </Card>
           {deleteGame && (
             <IconButton
               onClick={() => deleteGame(game._id)}
               icon="trash"
+              margin="10px"
+            ></IconButton>
+          )}
+          {joinGame && (
+            <IconButton
+              onClick={() => joinGame(game._id)}
+              icon="add"
               margin="10px"
             ></IconButton>
           )}

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Pane, Popover, Avatar, Tooltip, Heading, Menu } from "evergreen-ui";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../actions/UserActions";
 
-export const NavigationTopBar = ({ user, logout }) => {
+export const NavigationTopBar = () => {
+  const { user, updateUser, logout } = useContext(UserContext);
   let history = useHistory();
   return (
     <Pane
@@ -20,8 +22,8 @@ export const NavigationTopBar = ({ user, logout }) => {
         </Heading>
       </Pane>
 
-      {user && (
-        <Tooltip content={`Logged in as ${user}`}>
+      {user?.username && (
+        <Tooltip content={`Logged in as ${user.username}`}>
           <Pane cursor="pointer">
             <Popover
               position="bottom-right"
@@ -30,14 +32,17 @@ export const NavigationTopBar = ({ user, logout }) => {
                   <Menu.Group>
                     <Menu.Item icon="user">Profile</Menu.Item>
 
-                    <Menu.Item onSelect={logout} icon="log-out">
+                    <Menu.Item
+                      onSelect={() => logout({ updateUser })}
+                      icon="log-out"
+                    >
                       Log out
                     </Menu.Item>
                   </Menu.Group>
                 </Menu>
               }
             >
-              <Avatar name={user} size={40} />
+              <Avatar name={user.username} size={40} />
             </Popover>
           </Pane>
         </Tooltip>

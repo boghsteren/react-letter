@@ -34,6 +34,7 @@ router.post(
   (req, res) => {
     var userInfo = {
       username: req.user.username,
+      _id: req.user._id,
     };
     res.send(userInfo);
   }

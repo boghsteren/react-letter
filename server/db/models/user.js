@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const general = require("../database").generalDB;
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
-mongoose.promise = Promise;
 
 // Define userSchema
 const userSchema = new Schema({
@@ -26,11 +26,10 @@ userSchema.pre("save", function (next) {
     next();
   } else {
     console.log("models/user.js hashPassword in pre save");
-
     this.password = this.hashPassword(this.password);
     next();
   }
 });
 
-const User = mongoose.model("User", userSchema);
+const User = general.model("User", userSchema);
 module.exports = User;

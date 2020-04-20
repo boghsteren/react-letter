@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Pane, Heading, TextInputField, Button } from "evergreen-ui";
 import { SignupBox } from "./UserSignUpBox";
+import { UserContext } from "../actions/UserActions";
 
-export const LoginBox = ({ login, createUser }) => {
+export const LoginBox = () => {
+  const { login, createUser } = useContext(UserContext);
   const [username, updateUsername] = useState("");
   const [password, updatePassword] = useState("");
   return (

@@ -1,6 +1,7 @@
+const love_letterDB = require("../database").love_letterDB;
 const mongoose = require("mongoose");
 
-var game = mongoose.model("game", {
+var game_love_letter = love_letterDB.model("game_love_letter", {
   host: {
     _id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,5 +34,5 @@ var game = mongoose.model("game", {
 });
 
 module.exports = {
-  game,
+  game_love_letter,
 };

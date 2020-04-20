@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-mongoose.Promise = global.Promise;
-
-mongoose
-  .connect(process.env.MONGO, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("Connection to database successful"))
-  .catch((err) => console.error(err));
-
-module.exports = {
-  mongoose,
+const config = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
 };
+
+module.exports.generalDB = mongoose.createConnection(
+  `${process.env.MONGO}/general`,
+  config
+);
+
+module.exports.love_letterDB = mongoose.createConnection(
+  `${process.env.MONGO}/love_letter`,
+  config
+);
