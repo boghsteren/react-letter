@@ -45,20 +45,18 @@ export const GameActions = ({ children }) => {
     }
   };
   return (
-    <div>
-      <GamesContext.Provider
-        value={{
-          openGames,
-          myGames,
-          createGame,
-          deleteGame,
-          joinGame,
-          setMyGames,
-          setOpenGames,
-        }}
-      >
-        {children}
-      </GamesContext.Provider>
-    </div>
+    <GamesContext.Provider
+      value={{
+        openGames,
+        myGames,
+        createGame,
+        deleteGame,
+        joinGame,
+        setMyGames,
+        setOpenGames,
+      }}
+    >
+      {children}
+    </GamesContext.Provider>
   );
 };

@@ -67,13 +67,11 @@ export const UserActions = ({ children }) => {
     }
   };
   return (
-    <div>
-      <UserContext.Provider
-        value={{ user, logout, login, updateUser, createUser }}
-      >
-        {children}
-      </UserContext.Provider>
-    </div>
+    <UserContext.Provider
+      value={{ user, logout, login, updateUser, createUser }}
+    >
+      {children}
+    </UserContext.Provider>
   );
 };
 

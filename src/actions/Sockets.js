@@ -25,3 +25,5 @@ export const Sockets = ({ children }) => {
   });
   return <div>{children}</div>;
 };
+
+export default Sockets;
