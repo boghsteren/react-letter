@@ -78,6 +78,7 @@ router.put("/:game/:id", async (req, res) => {
 router.put("/:game/:id/join", async (req, res) => {
   let doc;
   const { id } = req.params;
+  console.log(id);
   const { user } = req;
   try {
     doc = await databases[req.params.game].findByIdAndUpdate(
