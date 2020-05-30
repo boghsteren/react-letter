@@ -34,11 +34,11 @@ export const ChatBox = ({ room }) => {
   return (
     <Pane
       background="tint1"
-      padding="20px"
+      padding="15px"
       border="default"
-      margin="20px"
+      margin="5px"
       elevation={1}
-      width="500px"
+      minWidth="400px"
     >
       <Pane border="default">
         <div
@@ -61,7 +61,6 @@ export const ChatBox = ({ room }) => {
 
       <Pane paddingTop="10px" display="flex" justifyContent="space-between">
         <TextInput
-          width="300px"
           placeholder="New message"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}

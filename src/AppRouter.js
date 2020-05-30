@@ -5,12 +5,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Pane, Spinner } from "evergreen-ui";
 import { NavigationTopBar } from "./components/NavigationTopBar";
 import { LoaderContext } from "./actions/LoaderComponent";
-import { GamesContext } from "./actions/GameActions";
 
 export const AppRouter = () => {
   const context = useContext(LoaderContext);
   const { loading } = context;
-  const { openGames, myGames } = useContext(GamesContext);
   return (
     <Router>
       <Pane>
@@ -19,7 +17,7 @@ export const AppRouter = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            width="100vw"
+            width="100%"
             height="100vh"
           >
             <Spinner></Spinner>
@@ -29,10 +27,10 @@ export const AppRouter = () => {
         )}
         <Switch>
           <Route exact path="/">
-            <FrontPage myGames={myGames} openGames={openGames}></FrontPage>
+            <FrontPage></FrontPage>
           </Route>
           <Route path="/:id">
-            <GamePage games={[...myGames, openGames]}></GamePage>
+            <GamePage></GamePage>
           </Route>
         </Switch>
       </Pane>

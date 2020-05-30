@@ -1,27 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { socket } from "../services/socket";
-import { GamesContext } from "./GameActions";
-import { UserContext } from "./UserActions";
+import { store } from "../App";
 
 export const Sockets = ({ children }) => {
-  const { openGames, setOpenGames, myGames, setMyGames } = useContext(
-    GamesContext
+  socket.on("game_added", ({ game }) =>
+    store.dispatch({ type: "ADD_GAMES", item: game })
   );
-  const { user } = useContext(UserContext);
-  socket.on("game_added", (doc) => setOpenGames([...openGames, doc.game]));
-  socket.on("game_deleted", (doc) =>
-    setOpenGames([...openGames.filter((game) => game._id !== doc.game._id)])
+  socket.on("game_deleted", ({ game }) =>
+    store.dispatch({ type: "REMOVE_GAMES", item: game })
   );
-  socket.on("game_updated", (doc) => {
-    setOpenGames([
-      ...openGames.filter((game) => game._id !== doc.game._id),
-      doc.game,
-    ]);
-    doc.game.host?._id === user?._id &&
-      setMyGames([
-        ...myGames.filter((game) => game._id !== doc.game._id),
-        doc.game,
-      ]);
+  socket.on("game_updated", ({ game }) => {
+    store.dispatch({ type: "UPDATES_GAMES", item: game });
   });
   return <div>{children}</div>;
 };

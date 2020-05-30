@@ -1,17 +1,14 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-
 const bodyParser = require("body-parser");
 const passport = require("./passport");
-require("dotenv").config();
-
 const gameAPI = require("./api/game_api");
 const userApi = require("./api/users_api");
 const chatAPI = require("./api/chat_api");
-// const { mongoose } = require("./db/database");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const dbConnections = require("./db/database");

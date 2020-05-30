@@ -12,6 +12,7 @@ var game_love_letter = love_letterDB.model("game_love_letter", {
     },
   },
   players: [],
+  max_players: { type: Number, default: 5 },
   started: {
     type: Boolean,
   },

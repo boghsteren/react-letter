@@ -1,88 +1,28 @@
 import React from "react";
-import {
-  Pane,
-  Heading,
-  Badge,
-  Card,
-  Strong,
-  Icon,
-  Tooltip,
-  IconButton,
-  Text,
-} from "evergreen-ui";
-import { useHistory } from "react-router-dom";
+import { Pane, Heading, Text } from "evergreen-ui";
+import GamesBoxGame from "./GamesBoxGame";
 
-export const GamesBox = ({ games, title, deleteGame, joinGame }) => {
-  let history = useHistory();
-  const seats = [1, 2, 3, 4, 5];
+export const GamesBox = ({ games, title, deleteAble, joinAble, leaveAble }) => {
   return (
     <Pane
-      padding="20px"
-      marginTop="20px"
+      padding="15px"
+      margin="5px"
       border="default"
       elevation={1}
       background="tint1"
+      minWidth="400px"
     >
       <Heading size={700} marginBottom="20px">
         {title}
       </Heading>
       {games?.map((game) => (
-        <Pane display="flex" key={game._id}>
-          <Card
-            background="white"
-            padding="10px"
-            marginTop="10px"
-            cursor="pointer"
-            hoverElevation={2}
-            onClick={() => history.push(`/${game._id}`)}
-            display="flex"
-            border="default"
-            alignItems="center"
-          >
-            <Strong
-              marginRight="10px"
-              width="100px"
-              whiteSpace="nowrap"
-              overflow="hidden"
-              textOverflow="ellipsis"
-            >
-              {game.game_name}
-            </Strong>
-            <Text marginLeft="10px" marginRight="10px" width="50px">
-              {game.host?.username}
-            </Text>
-            <Pane marginRight="10px">
-              {seats.map((seat) => (
-                <Tooltip
-                  key={seat}
-                  content={seat > game.players.length ? "Open" : "Player"}
-                >
-                  <Icon
-                    icon="person"
-                    color={seat > game.players.length ? "disabled" : "black"}
-                  ></Icon>
-                </Tooltip>
-              ))}
-            </Pane>
-            <Badge marginRight="10px" color={game.started ? "blue" : "purple"}>
-              {game.started ? "Started" : "Not started"}
-            </Badge>
-          </Card>
-          {deleteGame && (
-            <IconButton
-              onClick={() => deleteGame(game._id)}
-              icon="trash"
-              margin="10px"
-            ></IconButton>
-          )}
-          {joinGame && (
-            <IconButton
-              onClick={() => joinGame(game._id)}
-              icon="add"
-              margin="10px"
-            ></IconButton>
-          )}
-        </Pane>
+        <GamesBoxGame
+          key={game._id}
+          game={game}
+          joinAble={joinAble}
+          leaveAble={leaveAble}
+          deleteAble={deleteAble}
+        ></GamesBoxGame>
       ))}
       {games.length === 0 && <Text>No games found</Text>}
     </Pane>

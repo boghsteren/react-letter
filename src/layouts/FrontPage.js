@@ -1,38 +1,50 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Pane } from "evergreen-ui";
 import { LoginBox } from "../components/UserLoginBox";
 import { GamesBox } from "../components/GamesBox";
 import { GameCreateNewBox } from "../components/GameCreateNewBox";
 import { ChatBox } from "../components/ChatBox";
-import { UserContext } from "../actions/UserActions";
+import { useSelector } from "react-redux";
+import {
+  selectHostedGames,
+  selectedOpenGames,
+  selectJoinedGames,
+} from "../selectors/gameSelectors";
 
-export default ({ createGame, joinGame, deleteGame, myGames, openGames }) => {
-  const { user } = useContext(UserContext);
+export default () => {
+  const { user } = useSelector((state) => state);
+  const { username } = user;
+  const myGames = useSelector(selectJoinedGames);
+  const hostedGames = useSelector(selectHostedGames);
+  const openGames = useSelector(selectedOpenGames);
   return (
     <Pane>
-      <Pane display="flex" flexWrap="wrap" margin="20px">
-        {!user && (
-          <Pane>
+      <Pane display="flex" margin="20px" flexWrap="wrap">
+        {!username && (
+          <Pane minWidth="400px">
             <LoginBox></LoginBox>
           </Pane>
         )}
-        {user && (
-          <GamesBox
-            games={openGames}
-            joinGame={joinGame}
-            title="Open games"
-          ></GamesBox>
+        {username && (
+          <Pane style={{ flexGrow: 1 }}>
+            <GamesBox games={openGames} joinAble title="Open games"></GamesBox>
+          </Pane>
         )}
-        {user && <ChatBox room="lobby"></ChatBox>}
+        {username && (
+          <Pane style={{ flexGrow: 1 }}>
+            <ChatBox room="lobby"></ChatBox>
+          </Pane>
+        )}
 
-        {user && (
-          <Pane>
+        {username && (
+          <Pane style={{ flexGrow: 1 }}>
             <GamesBox
-              games={myGames}
-              deleteGame={deleteGame}
-              title="My games"
+              games={hostedGames}
+              deleteAble
+              title="Hosted games"
             ></GamesBox>
-            <GameCreateNewBox createGame={createGame}></GameCreateNewBox>
+            <GamesBox games={myGames} title="My games" leaveAble></GamesBox>
+            <GameCreateNewBox></GameCreateNewBox>
           </Pane>
         )}
       </Pane>

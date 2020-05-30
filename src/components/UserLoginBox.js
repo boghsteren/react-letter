@@ -1,21 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Pane, Heading, TextInputField, Button } from "evergreen-ui";
 import { SignupBox } from "./UserSignUpBox";
-import { UserContext } from "../actions/UserActions";
+import { login } from "../actions/AuthActions";
 
 export const LoginBox = () => {
-  const { login, createUser } = useContext(UserContext);
   const [username, updateUsername] = useState("");
   const [password, updatePassword] = useState("");
   return (
-    <Pane
-      width="300px"
-      border="default"
-      padding="20px"
-      margin="20px"
-      elevation={1}
-      minWidth="300px"
-    >
+    <Pane border="default" padding="20px" margin="20px" elevation={1}>
       <form>
         <Heading marginBottom="20px" size={600}>
           Log in
@@ -37,12 +29,12 @@ export const LoginBox = () => {
           <Button
             onClick={(e) => {
               e.preventDefault();
-              login(username, password);
+              login({ username, password });
             }}
           >
             Log in
           </Button>
-          <SignupBox createUser={createUser} login={login}></SignupBox>
+          <SignupBox></SignupBox>
         </Pane>
       </form>
     </Pane>

@@ -7,11 +7,33 @@ var mongoose = require("mongoose");
 
 const databases = { game_love_letter };
 
-router.get("/:game/mine", async (req, res) => {
+router.get("/:game/", async (req, res) => {
+  let doc;
+  try {
+    doc = await databases[req.params.game].find({});
+  } catch (err) {
+    throw err;
+  }
+  res.send(doc);
+});
+
+router.get("/:game/hosted", async (req, res) => {
   let doc;
   try {
     doc = await databases[req.params.game].find({
       "host._id": mongoose.Types.ObjectId(req.user._id),
+    });
+  } catch (err) {
+    throw err;
+  }
+  res.send(doc);
+});
+
+router.get("/:game/mine", async (req, res) => {
+  let doc;
+  try {
+    doc = await databases[req.params.game].find({
+      "players._id": mongoose.Types.ObjectId(req.user._id),
     });
   } catch (err) {
     throw err;
@@ -24,6 +46,7 @@ router.get("/:game/open", async (req, res) => {
   try {
     doc = await databases[req.params.game].find({
       started: false,
+      "players._id": { $nin: [mongoose.Types.ObjectId(req.user._id)] },
     });
   } catch (err) {
     throw err;
@@ -31,10 +54,23 @@ router.get("/:game/open", async (req, res) => {
   res.send(doc);
 });
 
-router.get("/:game", async (req, res) => {
+router.get("/:game/active", async (req, res) => {
   let doc;
   try {
-    doc = await databases[req.params.game].findById(req.body.game);
+    doc = await databases[req.params.game].find({
+      started: true,
+      finished_date: null,
+    });
+  } catch (err) {
+    throw err;
+  }
+  res.send(doc);
+});
+
+router.get("/:game/:id", async (req, res) => {
+  let doc;
+  try {
+    doc = await databases[req.params.game].findById(req.params.id);
   } catch (err) {
     throw err;
   }
@@ -78,12 +114,29 @@ router.put("/:game/:id", async (req, res) => {
 router.put("/:game/:id/join", async (req, res) => {
   let doc;
   const { id } = req.params;
-  console.log(id);
   const { user } = req;
   try {
     doc = await databases[req.params.game].findByIdAndUpdate(
       id,
       { $push: { players: user } },
+      { new: true }
+    );
+  } catch (err) {
+    throw err;
+  }
+  res.send(doc);
+  const io = req.app.locals.io;
+  io.emit(`game_updated`, { game_name: req.params.game, game: doc });
+});
+
+router.put("/:game/:id/leave", async (req, res) => {
+  let doc;
+  const { id } = req.params;
+  const { user } = req;
+  try {
+    doc = await databases[req.params.game].findByIdAndUpdate(
+      id,
+      { $pull: { players: { _id: user._id } } },
       { new: true }
     );
   } catch (err) {

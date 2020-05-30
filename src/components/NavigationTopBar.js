@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Pane, Popover, Avatar, Tooltip, Heading, Menu } from "evergreen-ui";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../actions/UserActions";
+import { useSelector } from "react-redux";
+import { logout } from "../actions/AuthActions";
 
 export const NavigationTopBar = () => {
-  const { user, updateUser, logout } = useContext(UserContext);
+  const { user } = useSelector((state) => state);
   let history = useHistory();
   return (
     <Pane
@@ -32,10 +33,7 @@ export const NavigationTopBar = () => {
                   <Menu.Group>
                     <Menu.Item icon="user">Profile</Menu.Item>
 
-                    <Menu.Item
-                      onSelect={() => logout({ updateUser })}
-                      icon="log-out"
-                    >
+                    <Menu.Item onSelect={() => logout()} icon="log-out">
                       Log out
                     </Menu.Item>
                   </Menu.Group>
